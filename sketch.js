@@ -44,9 +44,9 @@ var Tpos5 = -800; //Var to calculate buffer terrain position(z-axis) of successi
 var GenralT_1; 
 var ARESfont;
 /////
-var d; //Variable to calculate distance between obstacle and rover
+var Rov_D_Obs; //Variable to calculate distance between obstacle and rover
+var status;
 
-//Preload function
 function preload(){
   M_Terrain = loadModel("Assets/3d Object/terrain.obj", true);
   rover = loadImage("Assets/Image/rover.gif");
@@ -60,7 +60,6 @@ function preload(){
   //model2 = loadModel("Assets/3d Object/T2.obj");
 }
 
-//Setup function
 function setup() {
   //Initialiasing gamestate
   gameState = 0;
@@ -79,7 +78,7 @@ function setup() {
   //Initialising AcknowledgeS to 0[Meaning - game didn't start]
   AcknowledgeS = 0;
   //Initialising object position
-  ob1 = -5;
+  ob1 = 0;
   //Initialising X positions of the obstacles
   mx1 = 10; 
   mx2 = -8;
@@ -141,6 +140,17 @@ function draw() {
     textSize(100);
     text("A  R  E  S", 0, -250);
     pop();
+
+    //collision(roverPositionX, mx2,);
+    //dist function and collision detection
+    //.                Rover               obstacle
+    //X - pos -    roverPositionX            mx2
+    //Y - pos -    23                         7
+    //Z - pos -    roverPositionZ            ob2
+    Rov_D_Obs = dist(roverPositionX, mx3, 6, 6, -roverPositionZ, -ob3);
+    //console.log("RoverX: " + Math.round(roverPositionX) + " RoverZ: " + Math.round(roverPositionZ));
+    //console.log("ObstX: " + Math.round(mx3) + "ObstZ: " + Math.round(ob3));
+    //console.log("dist: " + Math.round(Rov_D_Obs));
     //Defining frameR
     if(keyIsDown(UP_ARROW) && frameCount%1 === 0 && AcknowledgeS === 1){
       frameR++;
@@ -160,24 +170,30 @@ function draw() {
     //Starting the game and changing rover position to its beginning when letter "S" is pressed[Aligigning rover to the  initial camera movement/position]
     if(keyIsDown(83) && AcknowledgeS === 0){
       //roverPositionZ = 0;
-      roverPositionZ = (-60);
+      roverPositionZ = (-16);
       AcknowledgeS = 1;
     }
     push();
     if(keyIsDown(UP_ARROW) && AcknowledgeS === 1){
-      roverPositionZ = (roverPositionZ) - 3.75;
+      roverPositionZ = (roverPositionZ) - 1;
     }
-    if(keyIsDown(RIGHT_ARROW) && keyIsDown(UP_ARROW) && AcknowledgeS === 1 && roverPositionX<55){
-      roverPositionX = roverPositionX + 0.2; //Right movement
+    //////////////////////////////////////
+    if(keyIsDown(DOWN_ARROW) && AcknowledgeS === 1){
+      roverPositionZ = (roverPositionZ) + 1;
     }
-    if(keyIsDown(LEFT_ARROW) && keyIsDown(UP_ARROW) && AcknowledgeS === 1 && roverPositionX>(-55)){
-      roverPositionX = roverPositionX - 0.2; //Left movement
+    //////////////////////////////////////
+    if(keyIsDown(RIGHT_ARROW) && keyIsDown(UP_ARROW) && AcknowledgeS === 1 && roverPositionX<15){
+      roverPositionX = roverPositionX + 0.1; //Right movement
     }
-    scale(4);
+    if(keyIsDown(LEFT_ARROW) && keyIsDown(UP_ARROW) && AcknowledgeS === 1 && roverPositionX>(-15)){
+      roverPositionX = roverPositionX - 0.1; //Left movement
+    }
+    //console.log("Tpos: " + Tpos);
+    scale(15);
     texture(rover);
     noStroke();
-    translate(roverPositionX, 23, roverPositionZ);
-    plane(25, 20);
+    translate(roverPositionX, 6.0, roverPositionZ);
+    plane(6.4, 5.4);
     pop();
     pop();      
     }
@@ -211,7 +227,6 @@ function createTerrains(){
     Tpos3 = Tpos2 - 200;
     Tpos4 = Tpos3 - 200;
     Tpos5 = Tpos4 - 200;
-    
  }
 
  //Terrain creation(MainTerrain) - Properties.
@@ -271,122 +286,134 @@ function createTerrains(){
 }
 
 //Function for Spawing the obstacles around on the terrain
- function spawnObstacles(){
-   if(frameR > 0 && frameR%370 === 0){
-    //Calculating object position
-    ob1 = ob1 - 340;
-  }
-    ob2 = ob1 - 96;
-    ob3 = ob2 - 96;
-    ob4 = ob3 - 96;
-    ob5 = ob4 - 96;
-    ob6 = ob5 - 96;
-    ob7 = ob6 - 96;
-    ob8 = ob7 - 96;
-    ob9 = ob8 - 96;
-    ob10 = ob9- 96;
+function spawnObstacles(){
+ if(frameR > 0){
+   //Calculating object position
+   ob1 = Tpos - 20;
+ }
+   ob2 = Tpos - 60 ;
+   ob3 = Tpos - 150;
+   ob4 = Tpos - 240;
+   ob5 = Tpos - 330;
+   ob6 = Tpos- 420;
+   ob7 = Tpos- 510;
+   ob8 = Tpos- 600;
+   ob9 = Tpos- 690;
+   ob10 = Tpos- 780;
   
-  if(frameR>0 && (frameR-100)%320 === 0){
-    mx1 = (random(5, 12)); 
-    mx2 = (random(-17, -13));
-    mx3 = (random(-5, 5));
-    mx4 = (random(-17, -13.5));
-    mx5 = (random(0, 6));
-    mx6 = (random(15, 17)); 
-    mx7 = (random(-17 ,17));
-    mx8 = (random(-17, 17));
-    mx9 = (random(-17, 17));
-    mx10 = (random(-17, 17));
+ if(frameR>0 && (frameR-100)%320 === 0){
+   mx1 = (random(5, 12)); 
+   mx2 = (random(-16, -8));
+   mx3 = (random(-5, 5));
+   mx4 = (random(-15, -11));
+   mx5 = (random(0, 6));
+   mx6 = (random(15, 17)); 
+   mx7 = (random(-17 ,17));
+   mx8 = (random(-17, 17));
+   mx9 = (random(-17, 17));
+   mx10 = (random(-17, 17));
+ }
+ push();
+ scale(15);
+ fill("WHITE");
+ translate(mx1, 7, ob1);
+ noStroke();
+ texture(textureImg2);
+ model(model2);
+ pop();
+ 
+ push();
+ scale(15);
+ fill("WHITE");
+ translate(mx2, 7, ob2);
+ noStroke();
+ texture(textureImg2);
+ model(model2);
+ pop();
+ 
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx3, 7, ob3);
+ texture(textureImg2);
+ model(model2);
+ pop();
+ 
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx4, 7, ob4);
+ texture(textureImg2);
+ model(model2);
+ pop();
+ 
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx5, 7, ob5);
+ texture(textureImg2);
+ model(model2);
+ pop();
+
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx6, 7, ob6);
+ texture(textureImg2);
+ model(model2);
+ pop();
+
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx7, 7, ob7);
+ texture(textureImg2);
+ model(model2);
+ pop();
+
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx8, 7, ob8);
+ texture(textureImg2);
+ model(model2);
+ pop();
+
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx9, 7, ob9);
+ texture(textureImg2);
+ model(model2);
+ pop();
+
+ push();
+ scale(15);
+ fill("WHITE");
+ noStroke();
+ translate(mx10, 7, ob10);
+ texture(textureImg2);
+ model(model2);
+ pop();
+}
+
+function collision(xa, xb, ya, yb, za, zb, la, lb, ba, bb, ha, hb){
+  if((abs(xa) - abs(xb)) < (abs(la/2) + abs(lb/2)) && (abs(xb)- abs(xa)) < (abs(la/2) + abs(lb/2))
+  && (abs(ya) - abs(yb)) < (abs(ba/2) + abs(bb/2)) && (abs(yb) - abs(ya)) < (abs(ba/2) + abs(bb/2))
+  && (abs(za) - abs(zb)) < (abs(ha/2) + abs(hb/2)) && (abs(zb) - abs(za)) < (abs(ha/2) + abs(hb/2)))
+  {
+    status = "Touching";
   }
-  push();
-  scale(15);
-  fill("WHITE");
-  translate(mx1, 7, ob1);
-  noStroke();
-  texture(textureImg2);
-  model(model2);
-  pop();
- 
-  push();
-  scale(15);
-  //fill("WHITE");
-  translate(mx2, 7, ob2);
-  noStroke();
-  texture(textureImg2);
-  model(model2);
-  pop();
- 
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx3, 7, ob3);
-  texture(textureImg2);
-  model(model2);
-  pop();
- 
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx4, 7, ob4);
-  texture(textureImg2);
-  model(model2);
-  pop();
- 
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx5, 7, ob5);
-  texture(textureImg2);
-  model(model2);
-  pop();
-
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx6, 7, ob6);
-  texture(textureImg2);
-  model(model2);
-  pop();
-
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx7, 7, ob7);
-  texture(textureImg2);
-  model(model2);
-  pop();
-
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx8, 7, ob8);
-  texture(textureImg2);
-  model(model2);
-  pop();
-
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx9, 7, ob9);
-  texture(textureImg2);
-  model(model2);
-  pop();
-
-  push();
-  scale(15);
-  fill("WHITE");
-  noStroke();
-  translate(mx10, 7, ob10);
-  texture(textureImg2);
-  model(model2);
-  pop();
+  else{
+    status = "Not touching"
+  }
 }
 
 
