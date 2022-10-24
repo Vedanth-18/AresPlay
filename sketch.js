@@ -29,8 +29,6 @@ var mx7; //Var to assign X position of obstacles
 var mx8; //Var to assign X position of obstacles
 var mx9; //Var to assign X position of obstacles
 var mx10; //Var to assign X position of obstacles
-const modelArray = [mx1, mx2, mx3, mx4, mx5, mx6, mx7, mx8, mx8, mx9, mx10]; //Array to add in the position/the models as a whole, to get (i).
-
 //Terrain Assests - Vars
 var M_Terrain; //Var to import 3d terrain model as obj object
 var textureImg; //Var to aplly texture for the terrain
@@ -42,14 +40,11 @@ var Tpos2 = -200; //Var to calculate buffer terrain position(z-axis) of successi
 var Tpos3 = -400; //Var to calculate buffer terrain position(z-axis) of successive buffer terrains
 var Tpos4 = -600; //Var to calculate buffer terrain position(z-axis) of successive buffer terrains
 var Tpos5 = -800; //Var to calculate buffer terrain position(z-axis) of successive buffer terrains
-var AcknowledgeS; //Variable to acknowledge the beginning of game[AcknowlegeS = 0, before game starts. AcknowledgeS = 1, to mark the start of the game].
-
 //Texts - Var
 var GenralT_1; 
 var ARESfont;
-
-//var sprite - trial
-var sp1;
+/////
+var d; //Variable to calculate distance between obstacle and rover
 
 //Preload function
 function preload(){
@@ -96,18 +91,15 @@ function setup() {
   mx8 = 0;
   mx9 = 6;
   mx10 = -17;
-
   //Defining Terrain Position
   Tpos = 0;
-
-  //sp1 = createSprite(windowsWidth/2, windowsHeight/2, 50, 50);
 }
 
 function draw() {  
-  //console.log("frameR: " + frameR);
+  //console.log("roverPositionX: " + roverPositionX);
+  //console.log("roverPositionZ: " + roverPositionZ);
   //Setting background - Colour
   background("BLACK");
-
   //Dashboard Screen
   if(gameState === 0){
     push();
@@ -116,7 +108,6 @@ function draw() {
     plane(windowWidth, windowHeight);
     pop();
   }
-
   //GAME SCENE
   if(gameState === 1){
     //Smooth
@@ -186,7 +177,7 @@ function draw() {
     texture(rover);
     noStroke();
     translate(roverPositionX, 23, roverPositionZ);
-    plane(25, 19);
+    plane(25, 20);
     pop();
     pop();      
     }
@@ -195,7 +186,7 @@ function draw() {
     noStroke();
     texture(controlsPanel);
     translate(0, 0, 300);
-    plane(400, 300);
+    plane(windowWidth/3, windowHeight/2.4);
     }
 }
 
@@ -203,6 +194,10 @@ function draw() {
 function mousePressed(){
     console.log("Pressed")
     gameState = 1;
+    //Resizing the canvas to full screen
+    //resizeCanvas(displayWidth, displayHeight, WEBGL);
+    //Switching to full screen mode  to fit the altered canvas dimensiosn and setting parameter to true(so when clicked again, it does't exit full screen mode)
+    //fullscreen(true);
 }
 
 //Terrain creation function - Called in main();
@@ -219,8 +214,7 @@ function createTerrains(){
     
  }
 
- //Terrain creation(MainTerrain)
-       //M_Terrain(n) - Properties of terrain(n)
+ //Terrain creation(MainTerrain) - Properties.
        push();
        //Describing the size of the terrain
        scale(15);
@@ -236,8 +230,7 @@ function createTerrains(){
        model(M_Terrain);
        pop();
 
-    //Terrain creation(BufferTerrain1)
-       //M_Terrain(n) - Properties of terrain(n) - BufferTerrain1..
+    //Terrain creation(BufferTerrain1) - Properties.
        push();
        scale(15);
        translate(0,0,Tpos2);
@@ -248,8 +241,7 @@ function createTerrains(){
        model(M_Terrain);
        pop();
 
-    //Terrain creation(BufferTerrain2)
-       //M_Terrain(n) - Properties of terrain(n) - BufferTerrain2..
+    //Terrain creation(BufferTerrain2) - Properties.
        push();
        scale(15);
        translate(0,0,Tpos3);
@@ -259,9 +251,7 @@ function createTerrains(){
        texture(textureImg);
        model(M_Terrain);
        pop();
-
-    //Terrain creation(BufferTerrain3)
-       //M_Terrain(n) - Properties of terrain(n) - BufferTerrain3..
+    //Terrain creation(BufferTerrain3) - Properties.
        push();
        scale(15);
        translate(0,0,Tpos4);
@@ -269,9 +259,7 @@ function createTerrains(){
        texture(textureImg);
        model(M_Terrain);
        pop();
-
-    //Terrain creation(BufferTerrain4)
-    //M_Terrain(n) - Properties of terrain(n) - BufferTerrain4..
+    //Terrain creation(BufferTerrain4) - Properties.
        push();
        scale(15);
        translate(0,0,Tpos5);
@@ -280,14 +268,11 @@ function createTerrains(){
        texture(textureImg);
        model(M_Terrain);
        pop();
-
-       
 }
 
 //Function for Spawing the obstacles around on the terrain
  function spawnObstacles(){
    if(frameR > 0 && frameR%370 === 0){
-     //console.log("Tpos2: " + Tpos);
     //Calculating object position
     ob1 = ob1 - 340;
   }
@@ -300,29 +285,19 @@ function createTerrains(){
     ob8 = ob7 - 96;
     ob9 = ob8 - 96;
     ob10 = ob9- 96;
-   
-    //console.log("ob1: " + ob1);
-    //console.log("Tpos; " + Tpos);
-   //var ratio = ob1/frameR;
-   //console.log("ob1: " + ob1);
-   //console.log("Ratio: " + ratio)
-   //console.log("frameR: " + frameR);
   
-if(frameR>0 && (frameR-100)%320 === 0){
-  mx1 = (random(5, 12)); 
-  mx2 = (random(-17, -13));
-  mx3 = (random(-5, 5));
-  mx4 = (random(-17, -13.5));
-  mx5 = (random(0, 6));
-  mx6 = (random(15, 17)); 
-  mx7 = (random(-17 ,17));
-  mx8 = (random(-17, 17));
-  mx9 = (random(-17, 17));
-  mx10 = (random(-17, 17));
-}
-
- //console.log("Length: " + modelArray.length);
-//for(var i = 0; i<1; i++){
+  if(frameR>0 && (frameR-100)%320 === 0){
+    mx1 = (random(5, 12)); 
+    mx2 = (random(-17, -13));
+    mx3 = (random(-5, 5));
+    mx4 = (random(-17, -13.5));
+    mx5 = (random(0, 6));
+    mx6 = (random(15, 17)); 
+    mx7 = (random(-17 ,17));
+    mx8 = (random(-17, 17));
+    mx9 = (random(-17, 17));
+    mx10 = (random(-17, 17));
+  }
   push();
   scale(15);
   fill("WHITE");
