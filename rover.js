@@ -22,7 +22,8 @@ class Rover{
             && (this.y - yc) < ((this.height/2) + (bc/2)) && (yc - this.y) < ((this.height/2) + (bc/2))
             && (this.z - zc) < ((0) + (hc/2)) && (zc - this.z) < ((0) + (hc/2)))
             {
-              gameState = 2;
+              collison_state = 'True';
+              function_state = 'False';
             }
           }
 }
