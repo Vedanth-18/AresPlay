@@ -46,6 +46,7 @@ var ARESfont;
 /////
 var Rov_D_Obs; //Variable to calculate distance between obstacle and rover
 var status;
+var y1, y2;
 
 function preload(){
   M_Terrain = loadModel("Assets/3d Object/terrain.obj", true);
@@ -122,7 +123,7 @@ function draw() {
     textFont(GenralT_1);
     textAlign(CENTER, CENTER);
     textSize(34);
-    fill(100 + sin(frameCount*0.06) * 255);
+    fill(sin(frameCount*0.08) * 255);
     text("Hold on letter 'C' for controls", 0, -163);
     pop();
     //Text2
@@ -130,7 +131,7 @@ function draw() {
     textFont(GenralT_1);
     textAlign(CENTER, CENTER);
     textSize(34);
-    fill(50 + sin(frameCount*0.06) * 255);
+    fill(sin(frameCount*0.08) * 255);
     text("Press 'S' to start", 0, -125);
     pop();
     //MainText
@@ -147,10 +148,13 @@ function draw() {
     //X - pos -    roverPositionX            mx2
     //Y - pos -    23                         7
     //Z - pos -    roverPositionZ            ob2
-    Rov_D_Obs = dist(roverPositionX, mx3, 6, 6, -roverPositionZ, -ob3);
+    Rov_D_Obs = dist(mx3, roverPositionX, -6, -6, ob3, -roverPositionZ);
     //console.log("RoverX: " + Math.round(roverPositionX) + " RoverZ: " + Math.round(roverPositionZ));
     //console.log("ObstX: " + Math.round(mx3) + "ObstZ: " + Math.round(ob3));
-    //console.log("dist: " + Math.round(Rov_D_Obs));
+    console.log("dist: " + Math.round(Rov_D_Obs));
+    //collison-
+    collision(mx3, roverPositionX, 6, 6, ob3, roverPositionZ);
+    //console.log("Status: " + status)
     //Defining frameR
     if(keyIsDown(UP_ARROW) && frameCount%1 === 0 && AcknowledgeS === 1){
       frameR++;
@@ -405,9 +409,9 @@ function spawnObstacles(){
 }
 
 function collision(xa, xb, ya, yb, za, zb, la, lb, ba, bb, ha, hb){
-  if((abs(xa) - abs(xb)) < (abs(la/2) + abs(lb/2)) && (abs(xb)- abs(xa)) < (abs(la/2) + abs(lb/2))
-  && (abs(ya) - abs(yb)) < (abs(ba/2) + abs(bb/2)) && (abs(yb) - abs(ya)) < (abs(ba/2) + abs(bb/2))
-  && (abs(za) - abs(zb)) < (abs(ha/2) + abs(hb/2)) && (abs(zb) - abs(za)) < (abs(ha/2) + abs(hb/2)))
+  if((xa - xb) < (la/2 + lb/2) && (xb- xa) < (la/2 + lb/2)
+  && (ya - yb) < (ba/2 + bb/2) && (yb - ya) < (ba/2 + bb/2)
+  && (za - zb) < (ha/2 + hb/2) && (zb - za) < (ha/2 + hb/2))
   {
     status = "Touching";
   }
