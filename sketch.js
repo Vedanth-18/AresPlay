@@ -1,7 +1,7 @@
 var gameState;
 var cam;
 var rover, rover_tex;
-var bg;
+var end_screen;
 var canvas3d;
 var roverPositionX, roverPositionZ;
 var controlsPanel;
@@ -19,7 +19,7 @@ var obstacle, obst_texture;
 function preload(){
   terrain = loadModel("Assets/3d Object/terrain.obj", true);
   rover_tex = loadImage("Assets/Image/rover.gif");
-  bg = loadImage("Assets/Image/Ares.webp");
+  end_screen = loadImage("Assets/Image/endscreen.png");
   textureImg = loadImage("Assets/Image/terr_texture.jpg");
   obst_texture = loadImage("Assets/Image/obst_texture.png");
   font_1 = loadFont("Assets/Text/Ares.otf");
@@ -29,7 +29,7 @@ function preload(){
 }
 
 function setup() {
-  gameState = 0;
+  gameState = 1;
   canvas3d = createCanvas(windowWidth, windowHeight, WEBGL);
   cam = createCamera(0, 0, 0);   
   roverPosition = 21;
@@ -41,21 +41,15 @@ function setup() {
   obst_z1 = 0; obst_x1 = 10;  obst_x2 = -8; obst_x3 = 3; obst_x4 = -16; obst_x5 = 10; obst_x6 = -10;  obst_x7 = 17; obst_x8 = 0; obst_x9 = 6; obst_x10 = -17;
   }
 
-function draw() {  
-  push();
+function draw() { 
   background("BLACK");
-  pop();
-  //Dashboard Screen
-  if(gameState === 0){
+  if(gameState == 2){
     push();
-    texture(bg);
+    texture(end_screen);
     noStroke();
     plane(windowWidth, windowHeight);
     pop();
-    mousePressed();
   }
-  
-  //GAME SCENE
   if(gameState === 1){
     smooth();
     orbitControl();
@@ -71,11 +65,6 @@ function draw() {
       frameR++;
     }
   }
-}
-
-function mousePressed(){
-    console.log("Pressed")
-    gameState = 1;
 }
 
 function interface(){
@@ -252,279 +241,3 @@ function rover_define(){
   //define
   rover = new Rover(roverPositionX, 6, roverPositionZ, 6.4, 5.4, 15, rover_tex);
 }
-
-//............Tested codes............///
-  // perspective(PI / 2.0, width /height);
-  //camX = map(mouseX, 0, width/10, -200, 200);
-  //camera((Xpos) +30 , -height/8, 0);
-  //camera((Xpos) +30 , -height/8, 0, width, height/6,0,0,1,0);
-  // cam.move(delta, 0, 0);
-  // if (frameCount % 10 === 0) {
-  //   delta *= 2;
-  // }
-  // if (delta===2 || delta > 2.2) {
-  //   delta =2;
-  // }
-  // perspective(PI / 2.0, width /height);
-  //camX = map(mouseX, 0, width/10, -200, 200);
-  //camera((Xpos) +30 , -height/8, 0);
-  //camera((Xpos) +30 , -height/8, 0, width, height/6,0,0,1,0);
-  //translate(0, 0, mouseX);
-  //console.log(modelX);
-  //box(85);
-  //rotateY(90);
-  //rotateZ(90);
-  //rotate(180);
-  //  if(frameCount%1===0){
-  //    if(Xpos<0){
-  //      Xpos+=6;
-  //    }
-  //    if(Xpos===0){
-  //      Xpos= -600;
-  //    }
-  //  }, (height/2) / tan(PI/6),width/2, height/2, 100, 0,1,0
-  //  if(Xpos>200){
-  //    Xpos = -width/2;
-  //  }
-  // if(frameCount%1===0){
-  //   Xpos=Xpos+10;
-  // }
-  //modelX(0,0,0);
-  // cam.setPosition(sin(frameCount / 60) * 200, 0, 100);
-  // perspective();
-  // X = sliderGroup[0].value();
-  // Y = sliderGroup[1].value();
-  // Z = sliderGroup[2].value();
-  // centerX = sliderGroup[3].value();
-  // centerY = sliderGroup[4].value();
-  // centerZ = sliderGroup[5].value();
-  //camera(X, Y, Z, centerX, centerY, centerZ, 0, 1, 0);
-  // for (var i = 0; i < 6; i++) {
-  //   if (i === 2) {
-  //     sliderGroup[i] = createSlider(10, 400, 200);
-  //   } else {
-  //     sliderGroup[i] = createSlider(-400, 400, 0);
-  //   }
-  //   h = map(i, 0, 6, 5, 85);
-  //   sliderGroup[i].position(10, height + h);
-  //   sliderGroup[i].style('width', '80px');
-  // }
-  //BG
-  //image(bgImg, displayWidth/2, displayHeight/2, displayWidth, displayHeight);
-  //BG_END
-  //cam.setPosition(0,0,0);
-  // function keyPressed(){
-  //   if(keyCode === 38){
-  //     cam.move(0, 0, +5);
-  //     //cam.setPosition(0, 0, captureframeCount*4);
-  //   }
-  //   loop();
-  // }
-
-  // function keyReleased(){
-  //   if(keyCode === 38){
-  //     return false;
-  //   }
-  //}
-  // //terrain3 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-400);
-    // stroke("BLUE");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-
-    // //terrain4 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-600);
-    // stroke("Green");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-
-    // //terrain5 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-800);
-    // stroke("RED");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-    //   //terrain6 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-1000);
-    // stroke(0);
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-  
-
-    /////
-    // //terrainD2 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-200);
-    // stroke("Yellow");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-
-    // //terrain3 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-400);
-    // stroke("BLUE");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-
-    // //terrain4 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-600);
-    // stroke("Green");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-
-    // //terrain5 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-800);
-    // stroke("RED");
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-    // //terrain6 - Properties of terrain
-    // push();
-    // scale(6);
-    // translate(0,0,-1000);
-    // stroke(0);
-    // fill(255, 102, 94);
-    // model(terrain);
-    // pop();
-
-    //DebugModeON
-  //debugMode(2100, 10,0 ,0, 0, 200, 0, 0, 0);
-  //Camera movement
-
-  //Spawning boosters
-// function boosterSpawn(){
-//   if(AcknowledgeS === 1){
-//     translate(random(-55, 55), random(Tpos, Tpos3), 0);
-//     plane(100, 100);
-//   }
-// }
-// function trial(){
-//   ob1 = -200;
-//   ob2 = ob1 - 250;
-//   ob3 = ob2 - 250;
-//   ob4 = ob3 - 250;
-//   ob5 = ob4 - 250;
-//   //
-//   push();
-//   translate(0, -20, ob1);
-//   fill("WHITE");
-//   plane(25, 19);
-//   pop();
-
-//   push();
-//   translate(0, -20, ob2);
-//   fill("WHITE");
-//   plane(25, 19);
-//   pop();
-
-//   push();
-//   translate(0, -20, ob3);
-//   fill("WHITE");
-//   plane(25, 19);
-//   pop();
-
-//   push();
-//   translate(0, -20, ob4);
-//   fill("WHITE");
-//   plane(25, 19);
-//   pop();
-
-//   push();
-//   translate(0, -20, ob5);
-//   fill("WHITE");
-//   plane(25, 19);
-//   pop();
-  
-// }
-  
-
-
-
-
-///.....................EXTRA TERRAINS........................//
-//Terrain creation(BufferTerrain5)
-       //terrain(n) - Properties of terrain(n) - BufferTerrain5..
-       //push();
-       //scale(15);
-       //translate(0,0,Tpos6);
-       //noStroke();
-       //fill(255, 102, 94);
-       //texture(textureImg);
-       //model(terrain);
-       //pop(); 
-//
-       ////Terrain creation(BufferTerrain6)
-       ////terrain(n) - Properties of terrain(n) - BufferTerrain6..
-       //push();
-       //scale(15);
-       //translate(0,0,Tpos7);
-       //noStroke();
-       //fill(255, 102, 94);
-       //texture(textureImg);
-       //model(terrain);
-       //pop();
-//
-       ////Terrain creation(BufferTerrain7)
-       ////terrain(n) - Properties of terrain(n) - BufferTerrain7..
-       //push();
-       //scale(15);
-       //translate(0,0,Tpos8);
-       //noStroke();
-       //fill(255, 102, 94);
-       //texture(textureImg);
-       //model(terrain);
-       //pop();
-//
-       ////Terrain creation(BufferTerrain7)
-       ////terrain(n) - Properties of terrain(n) - BufferTerrain8..
-       //push();
-       //scale(15);
-       //translate(0,0,Tpos9);
-       //noStroke();
-       //fill(255, 102, 94);
-       //texture(textureImg);
-       //model(terrain);
-       //pop();
-//
-       ////Terrain creation(BufferTerrain9)
-       ////terrain(n) - Properties of terrain(n) - BufferTerrain9..
-       //push();
-       //scale(15);
-       //translate(0,0,Tpos10);
-       //noStroke();
-       //fill(255, 102, 94);
-       //texture(textureImg);
-       //model(terrain);
-       //pop();
-       ////////////INITIALISATION CODE...........
-       //Tpos6 = Tpos5 - 200;
-    //Tpos7 = Tpos6 - 200;
-    //Tpos8 = Tpos7 - 200;
-    //Tpos9 = Tpos + 200;
-    //Tpos10 = Tpos9 + 200;
-    ////
-    // var Tpos6 = -1000; //Var to calculate buffer terrain position(z-axis) of successive buffer terrains
-// var Tpos7 = -1200;
-// var Tpos8 = -1400;
-// var Tpos9 = 200;
-// var Tpos10 = 400;

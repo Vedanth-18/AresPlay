@@ -22,7 +22,7 @@ class Rover{
             && (this.y - yc) < ((this.height/2) + (bc/2)) && (yc - this.y) < ((this.height/2) + (bc/2))
             && (this.z - zc) < ((0) + (hc/2)) && (zc - this.z) < ((0) + (hc/2)))
             {
-              console.log("Touching" )
+              gameState = 2;
             }
           }
 }
